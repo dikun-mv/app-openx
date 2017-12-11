@@ -5,12 +5,21 @@
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.0.17"
+    "react-scripts": "1.0.17",
+    "vast-player": "^0.2.10"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "clean": "rm -rf static",
+    "build": "yarn run clean; react-scripts build; copyfiles -u 1 'build/**/*' .",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "homepage": ".",
+  "outernet": {
+    "name": "OpenX App"
+  },
+  "devDependencies": {
+    "copyfiles": "^1.2.0"
   }
 }
