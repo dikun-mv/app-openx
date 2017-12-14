@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Player from './Player';
+import { startScheduler, stopScheduler } from '../utils/outernets';
 
 import './App.css';
 
@@ -25,10 +26,12 @@ export default class App extends Component {
 
   onPlayerStart = (player) => {
     this.setState((state) => ({ ...state, playing: true }));
+    stopScheduler().catch((error) => this.setState((state) => ({ ...state, error })));
   }
 
   onPlayerStop = (player) => {
     this.setState((state) => ({ ...state, playing: false }));
+    startScheduler().catch((error) => this.setState((state) => ({ ...state, error })));
   }
 
   componentWillMount() {
