@@ -7,7 +7,7 @@
   background-color: #000;
 }
 
-.Error {
+.Message {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +17,9 @@
   font-size: 32pt;
 }
 
-.Player {
-  width: 100%;
-  height: 100%;
+.Logo {
+  position:  absolute;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
 }

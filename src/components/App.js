@@ -4,7 +4,11 @@ import Player from './Player';
 import './App.css';
 
 const Error = ({ text }) => (
-  <div className="Error">{text}</div>
+  <div className="Message">{text}</div>
+);
+
+const Logo = ({ style }) => (
+  <div className="Message Logo" style={style}>OUTERNETS</div>
 );
 
 export default class App extends Component {
@@ -12,10 +16,19 @@ export default class App extends Component {
     super(props);
 
     this.state = {
+      playing: false,
       loading: true,
       error: null,
       config: null
     }
+  }
+
+  onPlayerStart = (player) => {
+    this.setState((state) => ({ ...state, playing: true }));
+  }
+
+  onPlayerStop = (player) => {
+    this.setState((state) => ({ ...state, playing: false }));
   }
 
   componentWillMount() {
@@ -32,10 +45,16 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
+        <Logo style={{ opacity: this.state.playing ? 0 : 1 }} />
         {!this.state.loading && (
           this.state.error
             ? <Error text="Ooops, something went wrong!" />
-            : <Player className="Player" source={this.state.config.url} />
+            : <Player
+              style={{ opacity: this.state.playing ? 1 : 0 }}
+              source={this.state.config.url}
+              onStart={this.onPlayerStart}
+              onStop={this.onPlayerStop}
+            />
         )}
       </div>
     );
