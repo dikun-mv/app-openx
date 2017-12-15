@@ -48,7 +48,9 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Logo style={{ opacity: this.state.playing ? 0 : 1 }} />
+        {!this.state.error && (
+          <Logo style={{ opacity: this.state.playing ? 0 : 1 }} />
+        )}
         {!this.state.loading && (
           this.state.error
             ? <Error text="Ooops, something went wrong!" />
