@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import VASTPlayer from 'vast-player';
 
-import './Player.css';
-
-export default class Player extends Component {
+class Player extends Component {
   constructor(props) {
     super(props);
 
@@ -12,42 +10,31 @@ export default class Player extends Component {
       error: null
     }
 
-    this._player = null;
+    this.player = null;
   }
 
-  start = () => {
-    this._player.startAd();
-  }
+  playLoop = () => {
+    this.player = new VASTPlayer(ReactDOM.findDOMNode(this.refs.container));
 
-  onError = (error) => {
-    this.setState((state) => ({ ...state, error }));
-  }
+    this.player.load(this.props.src)
+      .then(() => this.player.startAd())
+      .catch((error) => this.setState({ error }));
 
-  onStart = () => {
-    if (this.props.onStart) {
-      this.props.onStart(this._player);
-    }
-  }
-
-  onStop = () => {
-    if (this.props.onStop) {
-      this.props.onStop(this._player);
-    }
+    this.player.once('AdStopped', this.playLoop);
   }
 
   componentDidMount() {
-    this._player = new VASTPlayer(ReactDOM.findDOMNode(this.refs.container));
-    this._player.load(this.props.source).then(this.start).catch(this.onError);
-
-    this._player.once('AdStarted', this.onStart);
-    this._player.once('AdStopped', this.onStop);
+    this.playLoop();
+    this.player.once('AdStarted', () => this.props.onStart && this.props.onStart(this.player));
   }
 
   render() {
-    if (this.state.error) throw new Error(this.state.error.message);
+    if (this.state.error) throw this.state.error;
 
     return (
-      <div ref="container" className="Player" style={this.props.style} />
+      <div ref="container" className="Player" />
     );
   }
 }
+
+export default Player;

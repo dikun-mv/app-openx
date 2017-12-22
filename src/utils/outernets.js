@@ -9,7 +9,10 @@ export function extractSettings() {
 export async function startScheduler() {
   const { baseUrl, areaId } = extractSettings();
 
-  const { status, statusText } = await fetch(`${baseUrl}/schedulers/${areaId}/start`, { credentials: 'include' });
+  const { status, statusText } = await fetch(
+    `${baseUrl}/schedulers/${areaId}/start`,
+    { credentials: 'include' }
+  );
 
   if (status !== 200) {
     throw new Error(statusText);
@@ -19,7 +22,23 @@ export async function startScheduler() {
 export async function stopScheduler() {
   const { baseUrl, areaId } = extractSettings();
 
-  const { status, statusText } = await fetch(`${baseUrl}/schedulers/${areaId}/stop`, { credentials: 'include' });
+  const { status, statusText } = await fetch(
+    `${baseUrl}/schedulers/${areaId}/stop`,
+    { credentials: 'include' }
+  );
+
+  if (status !== 200) {
+    throw new Error(statusText);
+  }
+}
+
+export async function adjustScheduler(time) {
+  const { baseUrl, areaId } = extractSettings();
+
+  const { status, statusText } = await fetch(
+    `${baseUrl}/schedulers/${areaId}/adjust?time=${time}`,
+    { credentials: 'include' }
+  );
 
   if (status !== 200) {
     throw new Error(statusText);
